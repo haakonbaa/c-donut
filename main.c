@@ -7,8 +7,8 @@
 #include <unistd.h>
 
 const double r = 1;
-const double dTheta = 0.01;
-const double dPhi = 0.01;
+const double dTheta = 0.05;
+const double dPhi = 0.05;
 const double cameraDist = 9;
 const double cameraWall = -1.1;
 
@@ -28,6 +28,7 @@ int main() {
     ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
     // hide cursor
     printf("\033[?25l");
+    printf("\033[34m");
 
     unsigned rows = w.ws_row;
     unsigned cols = w.ws_col;
@@ -83,7 +84,7 @@ int main() {
             putchar(buffer[i]);
         }
         fflush(stdout);
-        sleep(0.1);
+        usleep(10000);
         // update light angle
         lightAngleTheta += 0.05;
         lightAnglePhi += 0.0;
