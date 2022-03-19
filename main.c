@@ -55,7 +55,7 @@ int main() {
         double lz = cos(lightAnglePhi);
         // fill in circle
         for (double theta = 0; theta < 2 * M_PI; theta += dTheta) {
-            for (double phi = 0; phi < M_PI; phi += dPhi) {
+            for (double phi = 0; phi < 2 * M_PI; phi += dPhi) {
                 // position (x,y,z) in 3-dimensions
                 // SPHERE
                 // double x = r * cos(theta) * sin(phi);
@@ -73,12 +73,19 @@ int main() {
                 // double transx = x * cos(rotZ) - y * sin(rotZ) * sin(rotX) + z * sin(rotZ) * sin(rotX);
                 // double transy = x * sin(rotZ) + y * cos(rotZ) * sin(rotX) - z * cos(rotZ) * sin(rotX);
                 // double transz = z * cos(rotX) + y * sin(rotX);
+                // transform (x,y,z) and surface normals
                 double transx = x * cos(rotZ) - y * cos(rotX) * sin(rotZ) + z * sin(rotZ) * sin(rotX);
                 double transy = y * cos(rotZ) * cos(rotX) + x * sin(rotZ) - z * cos(rotZ) * sin(rotX);
                 double transz = z * cos(rotX) + y * sin(rotX);
                 x = transx;
                 y = transy;
                 z = transz;
+                double transnx = nx * cos(rotZ) - ny * cos(rotX) * sin(rotZ) + nz * sin(rotZ) * sin(rotX);
+                double transny = ny * cos(rotZ) * cos(rotX) + nx * sin(rotZ) - nz * cos(rotZ) * sin(rotX);
+                double transnz = nz * cos(rotX) + ny * sin(rotX);
+                nx = transnx;
+                ny = transny;
+                nz = transnz;
                 // // camera x and y position
                 double sy = (cameraDist * z) / (cameraDist + y - cameraWall);
                 double sx = (cameraDist * x) / (cameraDist + y - cameraWall);
@@ -107,10 +114,10 @@ int main() {
         fflush(stdout);
         usleep(50000);
         // update light angle
-        // lightAngleTheta += 0.05;
+        lightAngleTheta += 0.05;
         // lightAnglePhi += 0.0;
         rotX += 0.1;
-        rotZ += 0.1;
+        // rotZ += 0.1;
     }
 
     // free buffer
