@@ -1,5 +1,6 @@
 #include <float.h>
 #include <math.h>
+#include <signal.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -24,12 +25,29 @@ int min(int a, int b) {
     return a < b ? a : b;
 }
 
+// dynamically allocated memory
+
+void sigquit(int signal) {
+    // disable alternative buffer
+    printf("\033[?1049l");
+    // re-enable cursor
+    printf("\033[?25h");
+    // reset color
+    printf("\033[0m");
+    exit(0);
+}
+
 int main() {
     struct winsize w;
     ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
     // hide cursor
     printf("\033[?25l");
+    // blue color
     printf("\033[34m");
+    // enable alternative buffer
+    printf("\033[?1049h");
+
+    signal(SIGINT, sigquit);
 
     unsigned rows = w.ws_row;
     unsigned cols = w.ws_col;
@@ -117,15 +135,12 @@ int main() {
         lightAngleTheta += 0.05;
         // lightAnglePhi += 0.0;
         rotX += 0.1;
-        // rotZ += 0.1;
+        rotZ += 0.1;
     }
 
     // free buffer
     free(buffer);
     free(zbuffer);
-
-    // re-enable cursor
-    printf("\033[?25h");
 
     return 0;
 }
