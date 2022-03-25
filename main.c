@@ -26,8 +26,13 @@ int min(int a, int b) {
 }
 
 // dynamically allocated memory
+char* buffer;
+float* zbuffer;
 
 void sigquit(int signal) {
+    // free buffer
+    free(buffer);
+    free(zbuffer);
     // disable alternative buffer
     printf("\033[?1049l");
     // re-enable cursor
@@ -137,10 +142,6 @@ int main() {
         rotX += 0.1;
         rotZ += 0.1;
     }
-
-    // free buffer
-    free(buffer);
-    free(zbuffer);
 
     return 0;
 }
